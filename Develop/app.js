@@ -1,4 +1,8 @@
 const inquirer = require("inquirer");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
 
 generateMembers();
 const teamMembers = [];
@@ -36,12 +40,13 @@ function generateMembers() {
         }
     ]).then(function (manager) {
         // console.log(manager);
+        const managerClass = new Manager (manager.name, manager.id, manager.email, manager.office);
+        console.log(managerClass);
         const roles = manager.roles;
-        teamMembers.push(manager);
-        console.log(teamMembers);
+        // teamMembers.push(manager);
+        // console.log(teamMembers);
         if (roles === "Engineer") {
             generateEngineer();
-            //    console.log(engineer);
         } else if (roles === "Intern") {
             generateIntern();
          } else {
@@ -87,6 +92,7 @@ function generateEngineer() {
         // console.log("This is from the generate engineer function: " + engineer);
         teamMembers.push(engineer);
         console.log(teamMembers);
+        const roles = engineer.roles;
         if (roles === "Engineer") {
             generateEngineer();
             // console.log(engineer);
@@ -131,9 +137,10 @@ function generateIntern() {
             ]
         }
     ]).then(function (intern) {
-        console.log("This is from the generate intern function: " + intern);
+        // console.log("This is from the generate intern function: " + intern);
         teamMembers.push(intern);
         console.log(teamMembers);
+        const roles = intern.roles;
         if (roles === "Engineer") {
             generateEngineer();
         } else if (roles === "Intern") {
