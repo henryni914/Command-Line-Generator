@@ -3,9 +3,12 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Employee = require("./lib/Employee");
+const render = require("./lib/htmlRenderer");
+const fs = require("fs");
+// const main = require("./templates/main.html")
 
 generateMembers();
-const teamMembers = [];
+var teamMembers = [];
 function generateMembers() {
     inquirer.prompt([
         {
@@ -39,20 +42,17 @@ function generateMembers() {
             ]
         }
     ]).then(function (manager) {
-        // console.log(manager);
-        const managerClass = new Manager (manager.name, manager.id, manager.email, manager.office);
-        console.log(managerClass);
+        const managerClass = new Manager(manager.name, manager.id, manager.email, manager.office);
+        teamMembers.push(managerClass);
         const roles = manager.roles;
-        // teamMembers.push(manager);
-        // console.log(teamMembers);
         if (roles === "Engineer") {
             generateEngineer();
         } else if (roles === "Intern") {
             generateIntern();
-         } else {
+        } else {
+            renderArray();
             return;
         }
-
     });
 };
 
@@ -89,16 +89,15 @@ function generateEngineer() {
             ]
         }
     ]).then(function (engineer) {
-        // console.log("This is from the generate engineer function: " + engineer);
-        teamMembers.push(engineer);
-        console.log(teamMembers);
+        const engineerClass = new Engineer(engineer.name, engineer.id, engineer.email, engineer.github);
+        teamMembers.push(engineerClass);
         const roles = engineer.roles;
         if (roles === "Engineer") {
             generateEngineer();
-            // console.log(engineer);
         } else if (roles === "Intern") {
             generateIntern();
         } else {
+            renderArray();
             return;
         }
     });
@@ -137,16 +136,34 @@ function generateIntern() {
             ]
         }
     ]).then(function (intern) {
-        // console.log("This is from the generate intern function: " + intern);
-        teamMembers.push(intern);
-        console.log(teamMembers);
+        const internClass = new Intern(intern.name, intern.id, intern.email, intern.school);
+        teamMembers.push(internClass);
         const roles = intern.roles;
         if (roles === "Engineer") {
             generateEngineer();
         } else if (roles === "Intern") {
             generateIntern();
         } else {
+            renderArray();
             return;
         }
     });
+}
+
+function renderArray() {
+    // console.log(teamMembers);
+    const htmlArray = render(teamMembers);
+    console.log(htmlArray);
+    fs.writeFileSync("./templates/main.html", htmlArray, function (err) {
+        if (err) {
+            return console.log("writefile failed")
+        }
+    })
+    // for (let i = 0; i < htmlArray.length; i++) {
+    //     fs.writeFileSync("./templates/main.html", htmlArray[i], function (err) {
+    //         if (err) {
+    //             return console.log("writefile failed")
+    //         }
+    //     })
+    // }
 }
