@@ -18,8 +18,8 @@ const render = employees => {
     .filter(employee => employee.getRole() === "Intern")
     .map(intern => renderIntern(intern))
   );
-    // console.log(html);
-  return renderMain(html.join(""));
+  console.log(html);
+  return renderMain(html.join("").split(",").join(""));
 
 };
 

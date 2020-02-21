@@ -154,16 +154,10 @@ function renderArray() {
     // console.log(teamMembers);
     const htmlArray = render(teamMembers);
     console.log(htmlArray);
+    
     fs.writeFileSync("./templates/main.html", htmlArray, function (err) {
         if (err) {
             return console.log("writefile failed")
         }
-    })
-    // for (let i = 0; i < htmlArray.length; i++) {
-    //     fs.writeFileSync("./templates/main.html", htmlArray[i], function (err) {
-    //         if (err) {
-    //             return console.log("writefile failed")
-    //         }
-    //     })
-    // }
-}
+    });
+};
